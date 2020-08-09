@@ -1,0 +1,31 @@
+{
+  "name": "@helloample/netlify-plugin-replace",
+  "version": "0.0.1",
+  "description": "Replace strings in your build directory",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "test:watch": "mocha -w"
+  },
+  "keywords": [
+    "netlify",
+    "netlify-plugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ample/netlify-plugin-replace"
+  },
+  "bugs": {
+    "url": "https://github.com/ample/netlify-plugin-replace/issues"
+  },
+  "author": "https://github.com/tcmacdonald",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=8.3.0"
+  }
+}
