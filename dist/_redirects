@@ -1,0 +1,2 @@
+/some-path  /redirected 200! Role=${REDIR_ROLE}
+/proxy/*    ${APP_ENDPOINT}/:splat  200!
