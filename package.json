@@ -1,9 +1,11 @@
 {
   "name": "@helloample/netlify-plugin-replace",
   "version": "0.0.1",
-  "description": "Replace strings in your build directory",
+  "description": "Replace strings in your publish directory",
   "main": "index.js",
   "scripts": {
+    "reset": "git checkout dist/",
+    "build": "yarn reset && netlify build",
     "test": "mocha",
     "test:watch": "mocha -w"
   },
@@ -21,9 +23,13 @@
   "author": "https://github.com/tcmacdonald",
   "license": "MIT",
   "dependencies": {
+    "find-in-files": "^0.5.0",
+    "replace-in-file": "^6.1.0"
   },
   "devDependencies": {
-    "mocha": "^7.0.0"
+    "mocha": "^7.0.0",
+    "toml": "^3.0.0",
+    "yaml": "^1.10.0"
   },
   "engines": {
     "node": ">=8.3.0"

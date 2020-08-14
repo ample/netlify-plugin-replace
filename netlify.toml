@@ -1,0 +1,11 @@
+[build]
+  command = ":"
+  publish = "./dist"
+
+[build.environment]
+  SITE_TITLE = "Hello World"
+  APP_ENDPOINT = "https://some.url"
+  REDIR_ROLE = "user"
+
+[[plugins]]
+package = "."

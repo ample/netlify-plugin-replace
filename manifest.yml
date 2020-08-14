@@ -1,0 +1,10 @@
+name: netlify-plugin-replace
+inputs:
+  - name: delimiter
+    description: Pattern encapsulating strings for replacement
+    default: \${([^}]*)}
+    required: true
+  - name: fileTypes
+    description: Pattern to filter files by
+    default: .*$
+    required: true
