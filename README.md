@@ -14,13 +14,13 @@ This build plugin solves that problem by replacing references to environment var
 
 ## Install
 
-Add the plugin to your package.json file...
+Add the plugin to your project's `package.json` file...
 
 ```
 $ npm i @helloample/netlify-plugin-replace -D
 ```
 
-Add the plugin to your `netlify.toml` file (see configuration for available options)...
+Add the plugin to your project's `netlify.toml` file (see configuration for available options)...
 
 [[plugins]]
   package = "@helloample/netlify-plugin-replace"
