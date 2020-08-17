@@ -54,10 +54,21 @@ describe("Replace", () => {
       }
     })
     it("should return results", () => {
-      assert.deepEqual(results["tmp/index.html"].results, { "tmp/index.html": 2 })
-      assert.deepEqual(results["tmp/contact.html"].results, { "tmp/contact.html": 1 })
-      assert.deepEqual(results["tmp/about.html"].results, { "tmp/about.html": 1 })
-      assert.deepEqual(results["tmp/_redirects"].results, { "tmp/_redirects": 1 })
+      assert.deepEqual(results["tmp/index.html"].results, [
+        { from: "${SITE_TITLE}", to: "something", numReplacements: 1 },
+        { from: "${APP_ENDPOINT}", to: "https://ample.co", numReplacements: 2 }
+      ])
+      assert.deepEqual(results["tmp/contact.html"].results, [
+        { from: "${SITE_TITLE}", to: "something", numReplacements: 1 }
+      ])
+      assert.deepEqual(results["tmp/about.html"].results, [
+        { from: "${SITE_TITLE}", to: "something", numReplacements: 1 },
+        { from: "${APP_ENDPOINT}", to: "https://ample.co", numReplacements: 1 }
+      ])
+      assert.deepEqual(results["tmp/_redirects"].results, [
+        { from: "${REDIR_ROLE}", to: "user", numReplacements: 1 },
+        { from: "${APP_ENDPOINT}", to: "https://ample.co", numReplacements: 1 }
+      ])
     })
   })
 
