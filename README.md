@@ -1,6 +1,8 @@
 # netlify-plugin-replace
 
-Replace environment variables in your publish directory _before_ Netlify deploys your build. Check out an example implementation [here](#).
+[![build status](https://api.travis-ci.com/ample/netlify-plugin-replace.svg)](https://travis-ci.com/github/ample/netlify-plugin-replace) [![npm version](https://badge.fury.io/js/%40helloample%2Fnetlify-plugin-replace.svg)](https://www.npmjs.com/package/@helloample/netlify-plugin-replace)
+
+Replace environment variables in your publish directory _before_ Netlify deploys your build. Check out an example implementation [here](https://github.com/ample/netlify-plugin-redirects-demo).
 
 ## Why?
 
