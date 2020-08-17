@@ -1,6 +1,6 @@
 {
   "name": "@helloample/netlify-plugin-replace",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Replace strings in your publish directory",
   "main": "index.js",
   "scripts": {
