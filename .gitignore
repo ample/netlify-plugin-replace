@@ -71,6 +71,7 @@ typings/
 # dotenv environment variables file
 .env
 .env.test
+.envrc
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -104,3 +105,4 @@ typings/
 
 # Local Netlify folder
 .netlify
+tmp/

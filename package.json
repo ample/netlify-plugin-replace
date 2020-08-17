@@ -27,6 +27,7 @@
     "replace-in-file": "^6.1.0"
   },
   "devDependencies": {
+    "fs-extra": "^9.0.1",
     "mocha": "^7.0.0",
     "toml": "^3.0.0",
     "yaml": "^1.10.0"

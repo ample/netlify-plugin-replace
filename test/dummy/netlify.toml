@@ -1,5 +1,0 @@
-[build]
-  command = "echo 'hello world'"
-
-[[plugins]]
-package = "../../"
