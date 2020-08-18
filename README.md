@@ -32,12 +32,12 @@ Commit & push changes back to your repository.
 By default, this plugin will look for strings that match the following pattern...
 
 ```
-${SOME_VALUE}
+${env:SOME_VALUE}
 ```
 
 ...and will attempt to replace that string with the value of the ENV variable by the same name. If the variable doesn't exist, it will not be replaced.
 
-Following this example, any file in your build's output directory containing the string `${SOME_VALUE}` will have that string replaced with the contents of `process.env.SOME_VALUE` when this plugin runs.
+Following this example, any file in your build's output directory containing the string `${env:SOME_VALUE}` will have that string replaced with the contents of `process.env.SOME_VALUE` when this plugin runs.
 
 ## Configuration
 
@@ -52,7 +52,7 @@ The default configuration, if none is specified, is:
 [[plugins]]
   package = "@helloample/netlify-plugin-replace"
   [plugins.inputs]
-    delimiter = "\${([^}]_)}"
+    delimiter = "\${env:([^}]_)}"
     fileTypes = ".*$"
 ```
 

@@ -45,7 +45,9 @@ describe("Replace", () => {
         const pathToFile = `${publishDir}/${file}`
         const buffer = fs.readFileSync(pathToFile)
         const contents = buffer.toString()
-        const instances = this.subject.files[pathToFile].instances.filter(i => i !== "${UNDEFINED}")
+        const instances = this.subject.files[pathToFile].instances.filter(
+          i => i !== "${env:UNDEFINED}"
+        )
         instances.forEach(instance => {
           let value = this.subject.getVar(instance)
           assert(!contents.includes(instance))
@@ -55,19 +57,19 @@ describe("Replace", () => {
     })
     it("should return results", () => {
       assert.deepEqual(results["tmp/index.html"].results, [
-        { from: "${SITE_TITLE}", to: "something", numReplacements: 1 },
-        { from: "${APP_ENDPOINT}", to: "https://ample.co", numReplacements: 2 }
+        { from: "${env:SITE_TITLE}", to: "something", numReplacements: 1 },
+        { from: "${env:APP_ENDPOINT}", to: "https://ample.co", numReplacements: 2 }
       ])
       assert.deepEqual(results["tmp/contact.html"].results, [
-        { from: "${SITE_TITLE}", to: "something", numReplacements: 1 }
+        { from: "${env:SITE_TITLE}", to: "something", numReplacements: 1 }
       ])
       assert.deepEqual(results["tmp/about.html"].results, [
-        { from: "${SITE_TITLE}", to: "something", numReplacements: 1 },
-        { from: "${APP_ENDPOINT}", to: "https://ample.co", numReplacements: 1 }
+        { from: "${env:SITE_TITLE}", to: "something", numReplacements: 1 },
+        { from: "${env:APP_ENDPOINT}", to: "https://ample.co", numReplacements: 1 }
       ])
       assert.deepEqual(results["tmp/_redirects"].results, [
-        { from: "${REDIR_ROLE}", to: "user", numReplacements: 1 },
-        { from: "${APP_ENDPOINT}", to: "https://ample.co", numReplacements: 1 }
+        { from: "${env:REDIR_ROLE}", to: "user", numReplacements: 1 },
+        { from: "${env:APP_ENDPOINT}", to: "https://ample.co", numReplacements: 1 }
       ])
     })
   })
@@ -93,34 +95,37 @@ describe("Replace", () => {
         "instances"
       ])
       assert.deepEqual(files["tmp/index.html"].matches, [
-        "${SITE_TITLE}",
-        "${APP_ENDPOINT}",
-        "${APP_ENDPOINT}"
+        "${env:SITE_TITLE}",
+        "${env:APP_ENDPOINT}",
+        "${env:APP_ENDPOINT}"
       ])
-      assert.deepEqual(files["tmp/index.html"].instances, ["${SITE_TITLE}", "${APP_ENDPOINT}"])
+      assert.deepEqual(files["tmp/index.html"].instances, [
+        "${env:SITE_TITLE}",
+        "${env:APP_ENDPOINT}"
+      ])
     })
   })
 
   it("should parse and return variable", () => {
     let str = "ever thus to deadbeats, lebowski"
     process.env.NETLIFY_PLUGIN_REPLACE_TEST_VALUE = str
-    assert.equal(this.subject.getVar("${NETLIFY_PLUGIN_REPLACE_TEST_VALUE}"), str)
+    assert.equal(this.subject.getVar("${env:NETLIFY_PLUGIN_REPLACE_TEST_VALUE}"), str)
     delete process.env.NETLIFY_PLUGIN_REPLACE_TEST_VALUE
   })
 
   it("should parse and return variable", () => {
     let str = "ever thus to deadbeats, lebowski"
     process.env.NETLIFY_PLUGIN_REPLACE_TEST_VALUE = str
-    assert.equal(this.subject.getVar("${NETLIFY_PLUGIN_REPLACE_TEST_VALUE}"), str)
+    assert.equal(this.subject.getVar("${env:NETLIFY_PLUGIN_REPLACE_TEST_VALUE}"), str)
     delete process.env.NETLIFY_PLUGIN_REPLACE_TEST_VALUE
   })
 
   it("should return all matches", async () => {
     const expected = [
-      ["${SITE_TITLE}", "${APP_ENDPOINT}"],
-      ["${SITE_TITLE}", "${UNDEFINED}"],
-      ["${SITE_TITLE}", "${APP_ENDPOINT}"],
-      ["${REDIR_ROLE}", "${APP_ENDPOINT}"]
+      ["${env:SITE_TITLE}", "${env:APP_ENDPOINT}"],
+      ["${env:SITE_TITLE}", "${env:UNDEFINED}"],
+      ["${env:SITE_TITLE}", "${env:APP_ENDPOINT}"],
+      ["${env:REDIR_ROLE}", "${env:APP_ENDPOINT}"]
     ]
     const matches = await this.subject.getMatches()
     Promise.all(matches).then(function (results) {
@@ -131,6 +136,6 @@ describe("Replace", () => {
 
   it("should return all matches in a file", async () => {
     const matches = await this.subject.getMatchesFor("tmp/index.html")
-    assert.deepEqual(matches, ["${SITE_TITLE}", "${APP_ENDPOINT}"])
+    assert.deepEqual(matches, ["${env:SITE_TITLE}", "${env:APP_ENDPOINT}"])
   })
 })

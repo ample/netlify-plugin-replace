@@ -2,7 +2,7 @@ name: netlify-plugin-replace
 inputs:
   - name: delimiter
     description: Pattern encapsulating strings for replacement
-    default: \${([^}]*)}
+    default: \${env:([^}]*)}
   - name: fileTypes
     description: Pattern to filter files by
     default: .*$
