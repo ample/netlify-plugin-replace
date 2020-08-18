@@ -4,8 +4,6 @@
 
 Replace environment variables in your publish directory _before_ Netlify processes your build. Check out an example implementation [here](https://github.com/ample/netlify-plugin-replace-demo).
 
-![For example...](https://rawcdn.githack.com/ample/netlify-plugin-replace-demo/676b1bfa865eedc26e407698b04e26bf7f9c27e0/example.png)
-
 ## Why?
 
 Netlify will deploy whatever you stick in your publish directory. This is great for simple use-cases but for projects that span multiple environments or rely heavily on environment variables, it can be tricky manage those differences without resorting to gnarly sed scripts or other unmentionable approaches.
