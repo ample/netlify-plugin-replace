@@ -20,22 +20,24 @@ Add the plugin to your project's `package.json` file...
 $ npm i @helloample/netlify-plugin-replace -D
 ```
 
-Add the plugin to your project's `netlify.toml` file (see configuration for available options)...
+Add the plugin to your project's `netlify.toml` file (see [configuration](https://github.com/ample/netlify-plugin-replace#configuration) for available options)...
 
+```
 [[plugins]]
   package = "@helloample/netlify-plugin-replace"
+```
 
 Commit & push changes back to your repository.
 
 ## Usage
 
-By default, this plugin will look for the following pattern...
+By default, this plugin will look for strings that match the following pattern...
 
 ```
 ${SOME_VALUE}
 ```
 
-...and will attempt to replace that string with the value of the ENV variable by the same name. If that variable doesn't exist, it won't replace anything.
+...and will attempt to replace that string with the value of the ENV variable by the same name. If the variable doesn't exist, it will not be replaced.
 
 Following this example, any file in your build's output directory containing the string `${SOME_VALUE}` will have that string replaced with the contents of `process.env.SOME_VALUE` when this plugin runs.
 
@@ -43,16 +45,18 @@ Following this example, any file in your build's output directory containing the
 
 This plugin offers some limited customization options as described below. Simply add these key/values to `netlify.toml` to customize the behavior for your needs.
 
-- `delimiter`: Regex pattern that tells the plugin how to find values to replace. Note, this pattern should contain a single capture group which encapsulates the entire name of the variable (defaults to `${...}`)
-- `fileTypes`: Regex pattern to determine the extension of the files to operate on (defaults to `.*`)
+- `delimiter`: Regex pattern that tells the plugin how to find values to replace. Note, this pattern should contain a single capture group which encapsulates the entire name of the variable
+- `fileTypes`: Regex pattern defining the extension of the files to operate upon
 
 The default configuration, if none is specified, is:
 
+```
 [[plugins]]
   package = "@helloample/netlify-plugin-replace"
   [plugins.inputs]
     delimiter = "\${([^}]_)}"
     fileTypes = "._\$"
+```
 
 ## License
 
