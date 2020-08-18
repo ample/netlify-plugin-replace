@@ -1,2 +1,2 @@
-/some-path  /redirected 200! Role=${REDIR_ROLE}
-/proxy/*    ${APP_ENDPOINT}/:splat  200!
+/some-path  /redirected 200! Role=${env:REDIR_ROLE}
+/proxy/*    ${env:APP_ENDPOINT}/:splat  200!
