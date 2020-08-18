@@ -55,7 +55,7 @@ The default configuration, if none is specified, is:
   package = "@helloample/netlify-plugin-replace"
   [plugins.inputs]
     delimiter = "\${([^}]_)}"
-    fileTypes = "._\$"
+    fileTypes = ".*$"
 ```
 
 ## License
