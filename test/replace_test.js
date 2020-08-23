@@ -3,6 +3,7 @@ const assert = require("assert")
 const fs = require("fs-extra")
 const toml = require("toml")
 const yaml = require("yaml")
+const Ignore = require("ignore")
 
 const Replace = require("../lib/replace")
 const Utils = require("../lib/utils")
@@ -18,7 +19,7 @@ describe("Replace", () => {
     this.config = toml.parse(netlify_config)
     this.env_vars = this.config.build.environment
 
-    publishDir = "tmp"
+    publishDir = "tmp/test"
     fs.emptyDirSync(publishDir)
     fs.copySync(this.config.build.publish, publishDir)
 
@@ -30,6 +31,10 @@ describe("Replace", () => {
     this.subject = new Replace(publishDir, inputs)
   })
 
+  after(() => {
+    fs.removeSync(publishDir)
+  })
+
   describe("perform()", () => {
     let results
     before(async () => {
@@ -38,7 +43,8 @@ describe("Replace", () => {
 
     it("should replace values", async () => {
       const files = ["index.html", "contact.html", "about.html", "_redirects"]
-      assert.deepEqual(fs.readdirSync(publishDir), files.sort())
+      const dirFiles = fs.readdirSync(publishDir).filter(f => !f.includes("admin"))
+      assert.deepEqual(dirFiles, files.sort())
 
       for (let i in files) {
         const file = files[i]
@@ -56,18 +62,18 @@ describe("Replace", () => {
       }
     })
     it("should return results", () => {
-      assert.deepEqual(results["tmp/index.html"].results, [
+      assert.deepEqual(results[`${publishDir}/index.html`].results, [
         { from: "${env:SITE_TITLE}", to: "something", numReplacements: 1 },
         { from: "${env:APP_ENDPOINT}", to: "https://ample.co", numReplacements: 2 }
       ])
-      assert.deepEqual(results["tmp/contact.html"].results, [
+      assert.deepEqual(results[`${publishDir}/contact.html`].results, [
         { from: "${env:SITE_TITLE}", to: "something", numReplacements: 1 }
       ])
-      assert.deepEqual(results["tmp/about.html"].results, [
+      assert.deepEqual(results[`${publishDir}/about.html`].results, [
         { from: "${env:SITE_TITLE}", to: "something", numReplacements: 1 },
         { from: "${env:APP_ENDPOINT}", to: "https://ample.co", numReplacements: 1 }
       ])
-      assert.deepEqual(results["tmp/_redirects"].results, [
+      assert.deepEqual(results[`${publishDir}/_redirects`].results, [
         { from: "${env:REDIR_ROLE}", to: "user", numReplacements: 1 },
         { from: "${env:APP_ENDPOINT}", to: "https://ample.co", numReplacements: 1 }
       ])
@@ -75,31 +81,42 @@ describe("Replace", () => {
   })
 
   describe("getFiles()", () => {
+    it("should observe contents of .gitignore", async () => {
+      const files = await this.subject.getFiles()
+      assert(Object.keys(files).indexOf("tmp/test/admin.html") === -1)
+
+      const isIgnored = Ignore()
+        .add(fs.readFileSync(".gitignore").toString())
+        .test("tmp/test/admin.html").ignored
+
+      assert(isIgnored)
+    })
+
     it("should return all files and matches for each file", async () => {
       const files = await this.subject.getFiles()
       assert.deepEqual(Object.keys(files), [
-        "tmp/index.html",
-        "tmp/contact.html",
-        "tmp/about.html",
-        "tmp/_redirects"
+        `${publishDir}/index.html`,
+        `${publishDir}/contact.html`,
+        `${publishDir}/about.html`,
+        `${publishDir}/_redirects`
       ])
     })
 
     it("it should return matches, instances and results for each file", async () => {
       const files = await this.subject.getFiles()
-      assert.deepEqual(Object.keys(files["tmp/index.html"]), [
+      assert.deepEqual(Object.keys(files[`${publishDir}/index.html`]), [
         "matches",
         "count",
         "line",
         "results",
         "instances"
       ])
-      assert.deepEqual(files["tmp/index.html"].matches, [
+      assert.deepEqual(files[`${publishDir}/index.html`].matches, [
         "${env:SITE_TITLE}",
         "${env:APP_ENDPOINT}",
         "${env:APP_ENDPOINT}"
       ])
-      assert.deepEqual(files["tmp/index.html"].instances, [
+      assert.deepEqual(files[`${publishDir}/index.html`].instances, [
         "${env:SITE_TITLE}",
         "${env:APP_ENDPOINT}"
       ])
@@ -135,7 +152,7 @@ describe("Replace", () => {
   })
 
   it("should return all matches in a file", async () => {
-    const matches = await this.subject.getMatchesFor("tmp/index.html")
+    const matches = await this.subject.getMatchesFor(`${publishDir}/index.html`)
     assert.deepEqual(matches, ["${env:SITE_TITLE}", "${env:APP_ENDPOINT}"])
   })
 })
