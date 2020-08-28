@@ -9,7 +9,7 @@ const Replace = require("../lib/replace")
 const Utils = require("../lib/utils")
 
 describe("Replace", () => {
-  let publishDir
+  let publishDir, inputs
 
   before(() => {
     const manifest = fs.readFileSync(Utils.cwd("manifest.yml"), "utf8")
@@ -23,7 +23,7 @@ describe("Replace", () => {
     fs.emptyDirSync(publishDir)
     fs.copySync(this.config.build.publish, publishDir)
 
-    const inputs = {
+    inputs = {
       delimiter: this.manifest.inputs[0].default,
       fileTypes: this.manifest.inputs[1].default
     }
@@ -77,6 +77,12 @@ describe("Replace", () => {
         { from: "${env:REDIR_ROLE}", to: "user", numReplacements: 1 },
         { from: "${env:APP_ENDPOINT}", to: "https://ample.co", numReplacements: 1 }
       ])
+    })
+    it("should not fail if publishDir does not exist", () => {
+      let subject = new Replace("some-directory-that-does-not-exist", inputs)
+      assert.doesNotThrow(async () => {
+        await subject.perform()
+      })
     })
   })
 
