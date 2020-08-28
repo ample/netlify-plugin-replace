@@ -1,4 +1,4 @@
-name: netlify-plugin-replace
+name: '@helloample/netlify-plugin-replace'
 inputs:
   - name: delimiter
     description: Pattern encapsulating strings for replacement
