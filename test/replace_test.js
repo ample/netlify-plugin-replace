@@ -161,4 +161,15 @@ describe("Replace", () => {
     const matches = await this.subject.getMatchesFor(`${publishDir}/index.html`)
     assert.deepEqual(matches, ["${env:SITE_TITLE}", "${env:APP_ENDPOINT}"])
   })
+
+  describe("getIgnoreFiles()", () => {
+    it("should return contents of .gitignore", () => {
+      let contents = fs.readFileSync(".gitignore")
+      assert(fs.existsSync(".gitignore"))
+      assert.equal(this.subject.getIgnoredFiles(), contents)
+    })
+    it("should always include node_modules whether .gitignore exists, specifies it or not", () => {
+      assert(this.subject.getIgnoredFiles("some-non-existent-file").includes("node_modules"))
+    })
+  })
 })
