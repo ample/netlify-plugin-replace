@@ -163,13 +163,23 @@ describe("Replace", () => {
   })
 
   describe("getIgnoreFiles()", () => {
+    let contents
+
+    beforeEach(() => {
+      contents = Utils.stripCommentsAndWhitespace(fs.readFileSync(".gitignore").toString())
+    })
+
     it("should return contents of .gitignore", () => {
-      let contents = fs.readFileSync(".gitignore")
       assert(fs.existsSync(".gitignore"))
-      assert.equal(this.subject.getIgnoredFiles(), contents)
+      assert.equal(this.subject.getIgnoredFiles(), contents.toString())
     })
     it("should always include node_modules whether .gitignore exists, specifies it or not", () => {
       assert(this.subject.getIgnoredFiles("some-non-existent-file").includes("node_modules"))
+    })
+    it("should not include publish directory", () => {
+      const subject = new Replace("some-publish-directory", inputs)
+      assert(contents.includes("some-publish-directory"))
+      assert(!subject.getIgnoredFiles().includes("some-publish-directory"))
     })
   })
 })
