@@ -5,6 +5,15 @@ const Utils = require("../lib/utils")
 const intercept = require("intercept-stdout")
 
 describe("utils", () => {
+  it("strips comments and whitespace from string", () => {
+    let str = `line 1
+
+# line 2
+
+line 3
+`
+    assert.equal(Utils.stripCommentsAndWhitespace(str), "line 1\nline 3")
+  })
   it("return absolute path to file", () => {
     assert.equal(Utils.cwd("somefile"), Path.join(process.cwd(), "somefile"))
   })
@@ -12,6 +21,7 @@ describe("utils", () => {
     assert.deepEqual(Utils.uniq([1, 2, 4, 4, 2, 6, 7]), [1, 2, 4, 6, 7])
   })
   it("pluralizes a string", () => {
+    assert.equal(Utils.pluralize("egg", 0), "eggs")
     assert.equal(Utils.pluralize("egg", 5), "eggs")
     assert.equal(Utils.pluralize("egg", 1), "egg")
   })
